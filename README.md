@@ -40,7 +40,7 @@ sequenceDiagram
 - **📅 Deadline Tracking**: Add optional due dates to track task completion schedules.
 - **🛡️ Secure Password Management**: Built-in functionality for users to change their password securely using bcrypt hashing.
 - **📱 Fluid UI/UX**: Crafted using React, styled with Tailwind CSS, and optimized with Vite for ultra-fast performance.
-- **🔔 Toast Notifications**: Global animated top-center toast system for success and error feedback across login, register, change-password, and task actions — no browser alerts.
+- **🔔 Toast Notifications**: Global animated top-center toast system for success and error feedback across login, register, change-password, and task actions - no browser alerts.
 - **🗑️ Delete Task Modal**: Inline styled modal matching the app's design language (consistent with AddTaskModal) used to confirm task deletion.
 
 
