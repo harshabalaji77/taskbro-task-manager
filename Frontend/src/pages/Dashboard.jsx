@@ -1,24 +1,23 @@
+import { Link } from 'react-router-dom';
 import TaskStats from '../components/TaskStats';
-import SearchBar from '../components/SearchBar';
+import TaskChart from '../components/TaskChart';
 import TaskList from '../components/TaskList';
-import AddTaskModal from '../components/AddTaskModal';
 
 const Dashboard = ({
   user,
   tasks,
-  searchTerm,
-  setSearchTerm,
-  isModalOpen,
   setIsModalOpen,
-  taskToEdit,
   setTaskToEdit,
-  handleAddTask,
   handleToggleComplete,
   handleDeleteTask,
   handleEditTask,
   completedTasks,
   inProgressTasks,
 }) => {
+  const recentTasks = [...tasks]
+    .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+    .slice(0, 3);
+
   return (
     <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <div className="py-4 mb-8">
@@ -36,6 +35,16 @@ const Dashboard = ({
               </p>
             </div>
           </div>
+          <button
+            onClick={() => {
+              setTaskToEdit(null);
+              setIsModalOpen(true);
+            }}
+            className="inline-flex items-center px-4 py-2.5 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors whitespace-nowrap"
+          >
+            <span className="mr-2 text-lg leading-none font-normal">+</span>
+            Add Task
+          </button>
         </div>
       </div>
 
@@ -45,38 +54,27 @@ const Dashboard = ({
         inProgressTasks={inProgressTasks}
       />
 
-      <div className="mb-6 flex items-center gap-3">
-        <div className="flex-1">
-          <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-        </div>
-        <button
-          onClick={() => {
-            setTaskToEdit(null);
-            setIsModalOpen(true);
-          }}
-          className="inline-flex items-center px-4 py-2.5 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors whitespace-nowrap"
+      <TaskChart tasks={tasks} />
+
+      <div className="mb-6 flex items-center justify-between">
+        <h3 className="text-xl font-bold text-gray-900">Recent Tasks</h3>
+        <Link
+          to="/tasks"
+          className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
         >
-          <span className="mr-2 text-lg leading-none font-normal">+</span>
-          Add Task
-        </button>
+          View All
+          <svg className="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </Link>
       </div>
 
       <TaskList
-        tasks={tasks}
-        searchTerm={searchTerm}
+        tasks={recentTasks}
+        searchTerm=""
         onToggleComplete={handleToggleComplete}
         onDelete={handleDeleteTask}
         onEdit={handleEditTask}
-      />
-
-      <AddTaskModal
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          setTaskToEdit(null);
-        }}
-        onAddTask={handleAddTask}
-        taskToEdit={taskToEdit}
       />
     </main>
   );

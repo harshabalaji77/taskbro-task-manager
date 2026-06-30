@@ -1,9 +1,12 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 
 const Header = ({ user, onLogout }) => {
+  const location = useLocation();
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
+
+  const isActive = (path) => location.pathname === path;
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -17,8 +20,46 @@ const Header = ({ user, onLogout }) => {
 
   return (
     <header className="bg-white border-b border-gray-100">
-      <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-gray-900">TaskBro</h1>
+      <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center relative">
+        <Link to="/" className="text-xl font-bold text-gray-900 hover:text-gray-700 transition-colors">
+          TaskBro
+        </Link>
+
+        {user && (
+          <nav className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-6">
+            <Link
+              to="/"
+              className={`inline-flex items-center text-xs font-semibold transition-colors duration-200 ${isActive('/')
+                  ? 'text-gray-900'
+                  : 'text-gray-400 hover:text-gray-900'
+                }`}
+            >
+              <svg className="w-4 h-4 mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                <rect x="14" y="14" width="7" height="7" rx="1.5" />
+                <rect x="3" y="14" width="7" height="7" rx="1.5" />
+              </svg>
+              Dashboard
+            </Link>
+            <Link
+              to="/tasks"
+              className={`inline-flex items-center text-xs font-semibold transition-colors duration-200 ${isActive('/tasks')
+                  ? 'text-gray-900'
+                  : 'text-gray-400 hover:text-gray-900'
+                }`}
+            >
+              <svg className="w-4 h-4 mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 6.5l1.5 1.5L8 4.5" />
+                <path d="M12 6h9" />
+                <path d="M3 14.5l1.5 1.5L8 12.5" />
+                <path d="M12 14h9" />
+              </svg>
+              Tasks
+            </Link>
+          </nav>
+        )}
+
         {user && (
           <div className="relative" ref={dropdownRef}>
             <button

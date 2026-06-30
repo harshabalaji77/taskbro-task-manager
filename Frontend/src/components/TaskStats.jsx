@@ -16,7 +16,7 @@ const TaskStats = ({ totalTasks, completedTasks, inProgressTasks }) => {
           </div>
         </div>
       </div>
-      
+
       <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
         <div className="flex items-center justify-between">
           <div>
@@ -30,7 +30,7 @@ const TaskStats = ({ totalTasks, completedTasks, inProgressTasks }) => {
           </div>
         </div>
       </div>
-      
+
       <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
         <div className="flex items-center justify-between">
           <div>
