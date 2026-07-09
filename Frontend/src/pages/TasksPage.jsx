@@ -13,6 +13,8 @@ const TasksPage = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all'); // 'all', 'pending', 'completed'
   const [priorityFilter, setPriorityFilter] = useState('all'); // 'all', 'low', 'medium', 'high'
+  const [isStatusOpen, setIsStatusOpen] = useState(false);
+  const [isPriorityOpen, setIsPriorityOpen] = useState(false);
 
   // Filter tasks
   const filteredTasks = tasks.filter((task) => {
@@ -40,23 +42,33 @@ const TasksPage = ({
   return (
     <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-gray-200 mb-8 gap-4">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900">All Tasks</h2>
-          <p className="text-sm text-gray-500 mt-1">
-            Manage, filter, and organize all your tasks in one place.
-          </p>
+      <div className="py-4 mb-8">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-5">
+            <div className="h-16 w-16 rounded-full bg-gradient-to-tr from-[#3b82f6] to-[#6366f1] text-white flex items-center justify-center shadow-lg select-none">
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 14l2 2 4-4" />
+              </svg>
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900">All Tasks</h2>
+              <p className="text-base text-gray-600 mt-1 font-medium">
+                Manage, filter, and organize all your tasks in one place.
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              setTaskToEdit(null);
+              setIsModalOpen(true);
+            }}
+            className="inline-flex items-center px-4 py-2.5 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors whitespace-nowrap"
+          >
+            <span className="mr-2 text-lg leading-none font-normal">+</span>
+            New Task
+          </button>
         </div>
-        <button
-          onClick={() => {
-            setTaskToEdit(null);
-            setIsModalOpen(true);
-          }}
-          className="inline-flex items-center px-4 py-2.5 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors whitespace-nowrap"
-        >
-          <span className="mr-2 text-lg leading-none font-normal">+</span>
-          Add Task
-        </button>
       </div>
 
       {/* Filter and Search Panel */}
@@ -68,39 +80,180 @@ const TasksPage = ({
         <div className="flex items-center gap-3">
           {/* Status Dropdown */}
           <div className="relative flex-1 sm:flex-none">
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full sm:w-44 pl-4 pr-10 py-2.5 border border-gray-305 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 hover:border-gray-400 transition-colors appearance-none cursor-pointer text-gray-700 font-medium"
+            <button
+              type="button"
+              onClick={() => {
+                setIsStatusOpen(!isStatusOpen);
+                setIsPriorityOpen(false);
+              }}
+              className="w-full sm:w-44 flex items-center justify-between pl-4 pr-3.5 py-2.5 border border-gray-200 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 hover:border-gray-400 transition-colors cursor-pointer text-gray-700 font-medium text-left"
             >
-              <option value="all">All Statuses</option>
-              <option value="pending">Pending</option>
-              <option value="completed">Completed</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5">
-              <svg className="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <span>
+                {statusFilter === 'all' && 'All Statuses'}
+                {statusFilter === 'pending' && 'Pending'}
+                {statusFilter === 'completed' && 'Completed'}
+              </span>
+              <svg className={`h-4 w-4 text-gray-500 transition-transform duration-200 ${isStatusOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
-            </div>
+            </button>
+
+            {isStatusOpen && (
+              <>
+                <div className="fixed inset-0 z-40" onClick={() => setIsStatusOpen(false)} />
+                <div className="absolute left-0 right-0 mt-1.5 w-full sm:w-44 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 text-sm overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStatusFilter('all');
+                      setIsStatusOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${
+                      statusFilter === 'all' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
+                    }`}
+                  >
+                    All Statuses
+                    {statusFilter === 'all' && (
+                      <svg className="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStatusFilter('pending');
+                      setIsStatusOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${
+                      statusFilter === 'pending' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
+                    }`}
+                  >
+                    Pending
+                    {statusFilter === 'pending' && (
+                      <svg className="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStatusFilter('completed');
+                      setIsStatusOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${
+                      statusFilter === 'completed' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
+                    }`}
+                  >
+                    Completed
+                    {statusFilter === 'completed' && (
+                      <svg className="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+              </>
+            )}
           </div>
 
           {/* Priority Dropdown */}
           <div className="relative flex-1 sm:flex-none">
-            <select
-              value={priorityFilter}
-              onChange={(e) => setPriorityFilter(e.target.value)}
-              className="w-full sm:w-44 pl-4 pr-10 py-2.5 border border-gray-305 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 hover:border-gray-400 transition-colors appearance-none cursor-pointer text-gray-700 font-medium"
+            <button
+              type="button"
+              onClick={() => {
+                setIsPriorityOpen(!isPriorityOpen);
+                setIsStatusOpen(false);
+              }}
+              className="w-full sm:w-44 flex items-center justify-between pl-4 pr-3.5 py-2.5 border border-gray-200 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 hover:border-gray-400 transition-colors cursor-pointer text-gray-700 font-medium text-left"
             >
-              <option value="all">All Priorities</option>
-              <option value="low">Low Priority</option>
-              <option value="medium">Medium Priority</option>
-              <option value="high">High Priority</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5">
-              <svg className="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <span>
+                {priorityFilter === 'all' && 'All Priorities'}
+                {priorityFilter === 'low' && 'Low Priority'}
+                {priorityFilter === 'medium' && 'Medium Priority'}
+                {priorityFilter === 'high' && 'High Priority'}
+              </span>
+              <svg className={`h-4 w-4 text-gray-500 transition-transform duration-200 ${isPriorityOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
-            </div>
+            </button>
+
+            {isPriorityOpen && (
+              <>
+                <div className="fixed inset-0 z-40" onClick={() => setIsPriorityOpen(false)} />
+                <div className="absolute left-0 right-0 mt-1.5 w-full sm:w-44 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 text-sm overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPriorityFilter('all');
+                      setIsPriorityOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${
+                      priorityFilter === 'all' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
+                    }`}
+                  >
+                    All Priorities
+                    {priorityFilter === 'all' && (
+                      <svg className="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPriorityFilter('low');
+                      setIsPriorityOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${
+                      priorityFilter === 'low' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
+                    }`}
+                  >
+                    Low Priority
+                    {priorityFilter === 'low' && (
+                      <svg className="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPriorityFilter('medium');
+                      setIsPriorityOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${
+                      priorityFilter === 'medium' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
+                    }`}
+                  >
+                    Medium Priority
+                    {priorityFilter === 'medium' && (
+                      <svg className="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPriorityFilter('high');
+                      setIsPriorityOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${
+                      priorityFilter === 'high' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
+                    }`}
+                  >
+                    High Priority
+                    {priorityFilter === 'high' && (
+                      <svg className="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

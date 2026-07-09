@@ -2,7 +2,7 @@ import React from 'react';
 
 const TaskCard = ({ task, onToggleComplete, onDelete, onEdit }) => {
   return (
-    <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 border border-gray-200">
+    <div className="bg-white rounded-lg shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:scale-[1.01] transition-all duration-300 border border-gray-200">
       <div className="p-5">
         <div className="mb-3">
           <div className="flex items-start space-x-3 mb-2">

@@ -11,6 +11,7 @@ import { getMe, logout } from './services/api';
 import { ToastProvider, useToast } from './contexts/ToastContext';
 import DeleteTaskModal from './components/DeleteTaskModal';
 import AddTaskModal from './components/AddTaskModal';
+import Footer from './components/Footer';
 
 const getTasksKey = (userId) => `taskflow-tasks-${userId}`;
 
@@ -197,35 +198,41 @@ const AppInner = () => {
                 <Route
                   path="/"
                   element={
-                    <div className="min-h-screen bg-gray-50">
+                    <div className="min-h-screen bg-gray-50 flex flex-col">
                       <Header user={user} onLogout={handleLogout} />
-                      <Dashboard
-                        user={user}
-                        tasks={tasks}
-                        setIsModalOpen={setIsModalOpen}
-                        setTaskToEdit={setTaskToEdit}
-                        handleToggleComplete={handleToggleComplete}
-                        handleDeleteTask={handleDeleteTask}
-                        handleEditTask={handleEditTask}
-                        completedTasks={completedTasks}
-                        inProgressTasks={inProgressTasks}
-                      />
+                      <div className="flex-grow">
+                        <Dashboard
+                          user={user}
+                          tasks={tasks}
+                          setIsModalOpen={setIsModalOpen}
+                          setTaskToEdit={setTaskToEdit}
+                          handleToggleComplete={handleToggleComplete}
+                          handleDeleteTask={handleDeleteTask}
+                          handleEditTask={handleEditTask}
+                          completedTasks={completedTasks}
+                          inProgressTasks={inProgressTasks}
+                        />
+                      </div>
+                      <Footer />
                     </div>
                   }
                 />
                 <Route
                   path="/tasks"
                   element={
-                    <div className="min-h-screen bg-gray-50">
+                    <div className="min-h-screen bg-gray-50 flex flex-col">
                       <Header user={user} onLogout={handleLogout} />
-                      <TasksPage
-                        tasks={tasks}
-                        setIsModalOpen={setIsModalOpen}
-                        setTaskToEdit={setTaskToEdit}
-                        handleToggleComplete={handleToggleComplete}
-                        handleDeleteTask={handleDeleteTask}
-                        handleEditTask={handleEditTask}
-                      />
+                      <div className="flex-grow">
+                        <TasksPage
+                          tasks={tasks}
+                          setIsModalOpen={setIsModalOpen}
+                          setTaskToEdit={setTaskToEdit}
+                          handleToggleComplete={handleToggleComplete}
+                          handleDeleteTask={handleDeleteTask}
+                          handleEditTask={handleEditTask}
+                        />
+                      </div>
+                      <Footer />
                     </div>
                   }
                 />

@@ -16,18 +16,22 @@ const TaskChart = ({ tasks }) => {
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (completionRate / 100) * circumference;
 
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+  const lowPercent = total > 0 ? Math.round((lowPriority / total) * 100) : 0;
+  const mediumPercent = total > 0 ? Math.round((mediumPriority / total) * 100) : 0;
+  const highPercent = total > 0 ? Math.round((highPriority / total) * 100) : 0;
 
-      {/* Left Card: Completion Rate */}
-      <div className="bg-white border border-gray-200 rounded-xl p-6 flex flex-col gap-4">
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-8">
+
+      {/* Left Card: Completion Rate (40% width on large screens) */}
+      <div className="lg:col-span-2 bg-white border border-gray-200 rounded-2xl p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow duration-200">
         <div>
-          <h3 className="text-sm font-semibold text-gray-900">Completion rate</h3>
-          <p className="text-xs text-gray-400 mt-0.5">Overview of done vs. pending tasks</p>
+          <h3 className="text-base font-bold text-gray-900">Completion rate</h3>
+          <p className="text-xs text-gray-500 mt-0.5 font-medium">Overview of done vs. pending tasks</p>
         </div>
 
-        <div className="flex items-center gap-5">
-          {/* SVG Radial Gauge — dark blue */}
+        <div className="flex flex-col sm:flex-row items-center gap-6 my-4 justify-center lg:justify-start">
+          {/* SVG Radial Gauge in professional Indigo */}
           <div className="relative w-32 h-32 flex items-center justify-center shrink-0">
             <svg className="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
               <circle
@@ -35,15 +39,15 @@ const TaskChart = ({ tasks }) => {
                 cy="60"
                 r={radius}
                 stroke="#f3f4f6"
-                strokeWidth="8"
+                strokeWidth="8.5"
                 fill="transparent"
               />
               <circle
                 cx="60"
                 cy="60"
                 r={radius}
-                stroke="#1e3a5f"
-                strokeWidth="8"
+                stroke="#4f46e5"
+                strokeWidth="8.5"
                 strokeDasharray={circumference}
                 strokeDashoffset={strokeDashoffset}
                 strokeLinecap="round"
@@ -51,110 +55,130 @@ const TaskChart = ({ tasks }) => {
                 className="transition-all duration-1000 ease-out"
               />
             </svg>
-            <div className="absolute flex flex-col items-center">
-              <span className="text-2xl font-bold text-gray-900">{completionRate}%</span>
-              <span className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Done</span>
+            <div className="absolute flex flex-col items-center select-none">
+              <span className="text-3xl font-extrabold text-gray-900 tracking-tight">{completionRate}%</span>
+              <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">Done</span>
             </div>
           </div>
 
-          {/* Legend + progress */}
-          <div className="flex flex-col gap-2.5 flex-1">
-            <div className="flex items-center justify-between text-xs">
-              <span className="flex items-center gap-2 text-gray-500">
-                <span className="w-2 h-2 rounded-full" style={{ background: '#1e3a5f' }}></span>
-                Completed
-              </span>
-              <span className="font-semibold text-gray-800">{completed} · {completionRate}%</span>
-            </div>
-            <div className="flex items-center justify-between text-xs">
-              <span className="flex items-center gap-2 text-gray-500">
-                <span className="w-2 h-2 rounded-full bg-gray-300"></span>
-                Pending
-              </span>
-              <span className="font-semibold text-gray-800">{pending} · {100 - completionRate}%</span>
-            </div>
-            <div className="mt-1">
-              <div className="w-full h-1 bg-gray-100 rounded-full overflow-hidden">
+          {/* Legend Details */}
+          <div className="flex flex-col gap-3.5 flex-1 w-full">
+            <div>
+              <div className="flex items-center justify-between text-xs mb-1">
+                <span className="flex items-center gap-2 text-gray-600 font-semibold">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#4f46e5]"></span>
+                  Completed
+                </span>
+                <span className="font-bold text-gray-800">{completed} <span className="text-gray-400 font-normal">({completionRate}%)</span></span>
+              </div>
+              <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
                 <div
-                  className="h-full rounded-full transition-all duration-1000 ease-out"
-                  style={{ width: `${completionRate}%`, background: '#1e3a5f' }}
+                  className="h-full rounded-full bg-[#4f46e5] transition-all duration-1000 ease-out"
+                  style={{ width: `${completionRate}%` }}
                 ></div>
               </div>
-              <p className="text-[10.5px] text-gray-400 mt-1">{completionRate}% of goal reached</p>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between text-xs mb-1">
+                <span className="flex items-center gap-2 text-gray-600 font-semibold">
+                  <span className="w-2.5 h-2.5 rounded-full bg-gray-300"></span>
+                  Pending
+                </span>
+                <span className="font-bold text-gray-800">{pending} <span className="text-gray-400 font-normal">({total > 0 ? 100 - completionRate : 0}%)</span></span>
+              </div>
+              <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-gray-300 transition-all duration-1000 ease-out"
+                  style={{ width: `${total > 0 ? 100 - completionRate : 0}%` }}
+                ></div>
+              </div>
             </div>
           </div>
+        </div>
+
+        <div className="border-t border-gray-100 pt-3 flex items-center justify-between text-xs font-semibold text-gray-500">
+          <span>Goal Status</span>
+          <span className="text-gray-700">
+            {completionRate === 100 ? 'All tasks done! 🎉' : `${completed} of ${total} tasks`}
+          </span>
         </div>
       </div>
 
-      {/* Right Card: Priority Breakdown */}
-      <div className="bg-white border border-gray-200 rounded-xl p-6 flex flex-col gap-4">
+      {/* Right Card: Priority Breakdown (60% width on large screens) */}
+      <div className="lg:col-span-3 bg-white border border-gray-200 rounded-2xl p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow duration-200">
         <div>
-          <h3 className="text-sm font-semibold text-gray-900">Priority breakdown</h3>
-          <p className="text-xs text-gray-400 mt-0.5">Task count by priority level</p>
+          <h3 className="text-base font-bold text-gray-900">Priority breakdown</h3>
+          <p className="text-xs text-gray-500 mt-0.5 font-medium">Distribution by urgency level</p>
         </div>
 
-        <div className="space-y-3.5">
-          {/* High Priority */}
-          <div>
-            <div className="flex justify-between items-center text-xs font-medium text-gray-500 mb-1.5">
-              <span className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-red-400"></span>
-                High priority
-              </span>
-              <span className="font-semibold text-gray-700">
-                {highPriority} {highPriority === 1 ? 'task' : 'tasks'} · {total > 0 ? Math.round((highPriority / total) * 100) : 0}%
-              </span>
-            </div>
-            <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
-              <div
-                className="bg-red-400 h-full rounded-full transition-all duration-1000 ease-out"
-                style={{ width: `${total > 0 ? (highPriority / total) * 100 : 0}%` }}
-              ></div>
-            </div>
+        {/* Single Horizontal Stacked Bar Chart */}
+        <div className="my-6">
+          <div className="w-full bg-gray-100 h-6 rounded-full overflow-hidden flex">
+            {total > 0 ? (
+              <>
+                {highPriority > 0 && (
+                  <div
+                    style={{ width: `${highPercent}%` }}
+                    className="bg-[#4f46e5] h-full transition-all duration-1000 ease-out"
+                    title={`High: ${highPriority} tasks (${highPercent}%)`}
+                  />
+                )}
+                {mediumPriority > 0 && (
+                  <div
+                    style={{ width: `${mediumPercent}%` }}
+                    className="bg-[#818cf8] h-full transition-all duration-1000 ease-out"
+                    title={`Medium: ${mediumPriority} tasks (${mediumPercent}%)`}
+                  />
+                )}
+                {lowPriority > 0 && (
+                  <div
+                    style={{ width: `${lowPercent}%` }}
+                    className="bg-[#c7d2fe] h-full transition-all duration-1000 ease-out"
+                    title={`Low: ${lowPriority} tasks (${lowPercent}%)`}
+                  />
+                )}
+              </>
+            ) : (
+              <div className="w-full bg-gray-150 h-full" />
+            )}
           </div>
 
-          {/* Medium Priority */}
-          <div>
-            <div className="flex justify-between items-center text-xs font-medium text-gray-500 mb-1.5">
-              <span className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-orange-400"></span>
-                Medium priority
+          {/* Inline Legend */}
+          <div className="grid grid-cols-3 gap-2 mt-4 pt-2">
+            <div className="flex flex-col text-xs">
+              <span className="flex items-center gap-1.5 text-gray-600 font-semibold">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#4f46e5] shrink-0"></span>
+                High
               </span>
-              <span className="font-semibold text-gray-700">
-                {mediumPriority} {mediumPriority === 1 ? 'task' : 'tasks'} · {total > 0 ? Math.round((mediumPriority / total) * 100) : 0}%
-              </span>
-            </div>
-            <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
-              <div
-                className="bg-orange-400 h-full rounded-full transition-all duration-1000 ease-out"
-                style={{ width: `${total > 0 ? (mediumPriority / total) * 100 : 0}%` }}
-              ></div>
-            </div>
-          </div>
-
-          {/* Low Priority */}
-          <div>
-            <div className="flex justify-between items-center text-xs font-medium text-gray-500 mb-1.5">
-              <span className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                Low priority
-              </span>
-              <span className="font-semibold text-gray-700">
-                {lowPriority} {lowPriority === 1 ? 'task' : 'tasks'} · {total > 0 ? Math.round((lowPriority / total) * 100) : 0}%
+              <span className="font-bold text-gray-900 mt-1 pl-4">
+                {highPriority} <span className="text-[10px] text-gray-400 font-normal">({highPercent}%)</span>
               </span>
             </div>
-            <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
-              <div
-                className="bg-emerald-400 h-full rounded-full transition-all duration-1000 ease-out"
-                style={{ width: `${total > 0 ? (lowPriority / total) * 100 : 0}%` }}
-              ></div>
+            <div className="flex flex-col text-xs border-l border-gray-100 pl-3">
+              <span className="flex items-center gap-1.5 text-gray-600 font-semibold">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#818cf8] shrink-0"></span>
+                Medium
+              </span>
+              <span className="font-bold text-gray-900 mt-1 pl-4">
+                {mediumPriority} <span className="text-[10px] text-gray-400 font-normal">({mediumPercent}%)</span>
+              </span>
+            </div>
+            <div className="flex flex-col text-xs border-l border-gray-100 pl-3">
+              <span className="flex items-center gap-1.5 text-gray-600 font-semibold">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#c7d2fe] shrink-0"></span>
+                Low
+              </span>
+              <span className="font-bold text-gray-900 mt-1 pl-4">
+                {lowPriority} <span className="text-[10px] text-gray-400 font-normal">({lowPercent}%)</span>
+              </span>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-gray-100 pt-3 flex items-center justify-between">
-          <p className="text-xs text-gray-400">Total tasks tracked</p>
-          <p className="text-sm font-semibold text-gray-800">{total} tasks</p>
+        <div className="border-t border-gray-100 pt-3 flex items-center justify-between text-xs font-semibold text-gray-500">
+          <span>Total urgency weight</span>
+          <span className="text-gray-800">{total} active {total === 1 ? 'task' : 'tasks'}</span>
         </div>
       </div>
 

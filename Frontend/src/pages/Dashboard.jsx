@@ -43,7 +43,7 @@ const Dashboard = ({
             className="inline-flex items-center px-4 py-2.5 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors whitespace-nowrap"
           >
             <span className="mr-2 text-lg leading-none font-normal">+</span>
-            Add Task
+            New Task
           </button>
         </div>
       </div>
