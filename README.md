@@ -25,7 +25,7 @@ sequenceDiagram
     Server-->>Client: Set HTTP-Only Cookie (token) & return User JSON
     Note over Client: Initialize tasks state from LocalStorage<br/>using key "taskflow-tasks-{userId}"
     Client-->>User: Render Dashboard with task listing
-    
+
     User->>Client: Create / Modify / Delete Task
     Client->>Client: Sync memory state & update LocalStorage
     Client-->>User: Instantly updates UI
@@ -35,13 +35,16 @@ sequenceDiagram
 
 - **🔐 High-Security Authentication**: Secure user registration and login utilizing JWT tokens passed via secure HTTP-Only Cookies to prevent XSS (Cross-Site Scripting) and CSRF (Cross-Site Request Forgery) vulnerabilities.
 - **💼 Per-User Task Isolation**: Encrypted database users coupled with client-side isolation ensuring tasks are mapped strictly to the logged-in user via unique identifiers (`taskflow-tasks-${userId}`).
-- **📊 Real-time Dashboard Analytics**: Instant metrics visualization on completed, pending, and total tasks.
-- **🔍 Instant Fuzzy Filtering**: Real-time searching of tasks based on titles and descriptions.
+- **📊 Real-time Dashboard Analytics**: Instant metrics visualization on completed, pending, and total tasks, including an interactive completion rate gauge and priority breakdown chart.
+- **🏷️ Task Priority System**: Three-tier priority labeling (Low / Medium / High) on all tasks, with color-coded badges for quick visual identification.
+- **🔍 Advanced Filtering**: Filter tasks by completion status (All / Pending / Completed) and priority level (All / Low / Medium / High) from the dedicated Tasks page.
+- **🔎 Instant Fuzzy Search**: Real-time searching of tasks based on titles and descriptions.
 - **📅 Deadline Tracking**: Add optional due dates to track task completion schedules.
 - **🛡️ Secure Password Management**: Built-in functionality for users to change their password securely using bcrypt hashing.
 - **📱 Fluid UI/UX**: Crafted using React, styled with Tailwind CSS, and optimized with Vite for ultra-fast performance.
-- **🔔 Toast Notifications**: Global animated top-center toast system for success and error feedback across login, register, change-password, and task actions - no browser alerts.
+- **🔔 Toast Notifications**: Global animated top-center toast system for success and error feedback across login, register, change-password, and task actions — no browser alerts.
 - **🗑️ Delete Task Modal**: Inline styled modal matching the app's design language (consistent with AddTaskModal) used to confirm task deletion.
+- **📈 TaskChart**: SVG-based radial gauge for completion rate and a horizontal stacked bar chart for priority distribution.
 
 
 ### 🛠️ Technology Stack
@@ -52,6 +55,8 @@ sequenceDiagram
 | **Client Routing** | React Router DOM | `^7.15.1` | Handle application navigation paths client-side |
 | **Build Tooling** | Vite | `^7.2.4` | Superfast HMR development server and optimized bundler |
 | **Styling** | Tailwind CSS | `^3.4.19` | Utility-first styling framework for responsive web design |
+| **HTTP Client** | Axios | `^1.17.0` | Promise-based HTTP client for API communication |
+| **ID Generation** | UUID | `^13.0.0` | RFC-compliant unique identifier generation for client-side tasks |
 | **Backend Core** | Node.js / Express | `^4.21.2` | Minimalist web framework for routing and middleware orchestration |
 | **Database ORM** | Mongoose | `^8.12.0` | Object data modeling for MongoDB schema definition |
 | **Session Security** | JWT / Cookies | `^9.0.2` / `^1.4.6` | Session management via sign verification |
@@ -75,6 +80,7 @@ TaskBro/
 │   │   └── routes/
 │   │       └── auth.routes.js     # API Route boundaries mapping middleware and controller
 │   ├── .env                       # Backend local configuration & secrets
+│   ├── .env.example               # Backend template configuration
 │   ├── server.js                  # Main entrypoint initializing express, middleware, routes
 │   ├── package-lock.json
 │   └── package.json               # Backend node package manifest
@@ -84,10 +90,12 @@ TaskBro/
 │   ├── src/
 │   │   ├── assets/                # App-compiled asset structures
 │   │   ├── components/
-│   │   │   ├── AddTaskModal.jsx   # Modal form view to capture task fields
+│   │   │   ├── AddTaskModal.jsx   # Modal form to capture task fields (title, description, priority, due date)
 │   │   │   ├── DeleteTaskModal.jsx # Confirmation modal for task deletion
+│   │   │   ├── Footer.jsx         # Application footer component
 │   │   │   ├── SearchBar.jsx      # Fuzzy text task filter input
 │   │   │   ├── TaskCard.jsx       # Layout component for individual tasks
+│   │   │   ├── TaskChart.jsx      # SVG radial gauge & priority stacked bar chart
 │   │   │   ├── TaskList.jsx       # Grid wrapper rendering multiple TaskCards
 │   │   │   ├── TaskStats.jsx      # Dashboard statistics analytics banner
 │   │   │   └── Toast.jsx          # Animated top-center toast notification UI
@@ -95,10 +103,11 @@ TaskBro/
 │   │   │   └── ToastContext.jsx   # Global toast state provider & useToast() hook
 │   │   ├── pages/
 │   │   │   ├── ChangePassword.jsx # Form view to execute password update
-│   │   │   ├── Dashboard.jsx      # Main layout displaying welcome, stats, task controls
+│   │   │   ├── Dashboard.jsx      # Main layout displaying welcome, stats, charts & recent tasks
 │   │   │   ├── Header.jsx         # App navigation and logout trigger
 │   │   │   ├── Login.jsx          # Secure login portal page
-│   │   │   └── Register.jsx       # Secure user registration portal
+│   │   │   ├── Register.jsx       # Secure user registration portal
+│   │   │   └── TasksPage.jsx      # Full task management page with search, status & priority filters
 │   │   ├── services/
 │   │   │   └── api.js             # Centralized Axios API configuration and auth requests
 │   │   ├── App.css                # Root component animations & resets
@@ -144,9 +153,9 @@ Before installing, ensure you have the following CLI utilities installed globall
    JWT_EXPIRES_IN=7d
    CLIENT_URL=http://localhost:5173
    ```
-   
+
    **Environment Variable Parameter Matrix:**
-   
+
    | Key | Default | Description | Requirement |
    | :--- | :--- | :--- | :--- |
    | `PORT` | `5000` | Port Express backend binds to listen for API requests | Optional (Defaults to 5000) |
@@ -364,6 +373,16 @@ TaskBro is engineered with secure-by-default architecture parameters:
 
 The frontend orchestrates tasks on the client-side to maximize application speed and minimize unnecessary server loads.
 
+#### Application Routes
+
+| Path | Component | Description |
+| :--- | :--- | :--- |
+| `/login` | `Login.jsx` | Secure login portal (redirects to `/` if already authenticated) |
+| `/signup` | `Register.jsx` | New user registration (redirects to `/` if already authenticated) |
+| `/` | `Dashboard.jsx` | Welcome banner, stats cards, TaskChart analytics, and recent tasks |
+| `/tasks` | `TasksPage.jsx` | Full task list with search, status filter, and priority filter |
+| `/change-password` | `ChangePassword.jsx` | Secure password update form |
+
 #### LocalStorage Partitioning Lifecycle:
 Instead of mixing global state, TaskBro divides tasks on a user-by-user basis using client-side partitioning key schemas:
 1. When user login state resolves:
@@ -382,11 +401,14 @@ Instead of mixing global state, TaskBro divides tasks on a user-by-user basis us
   "id": "2d7b2752-6cb0-466d-8848-936b8017c6a9",
   "title": "Deploy Backend API to production server",
   "description": "Ensure environmental secret credentials and CORS origins are configured before launch.",
+  "priority": "high",
   "dueDate": "2026-06-18",
   "completed": false,
   "createdAt": "2026-06-11T11:42:38.283Z"
 }
 ```
+
+**Priority field values**: `"low"` | `"medium"` *(default)* | `"high"`
 
 
 ### 🔧 Troubleshooting & Common Issues
@@ -400,7 +422,7 @@ Instead of mixing global state, TaskBro divides tasks on a user-by-user basis us
 
 #### 2. MongoDB Connection Failure
 * **Symptom**: Server crashes on startup with `MongooseServerSelectionError: connection timed out`.
-* **Fix**: 
+* **Fix**:
   * Ensure MongoDB server is active if running locally.
   * If using MongoDB Atlas, check that you have added your current IP address to the Network Access whitelist inside the MongoDB Atlas Console.
 
