@@ -1,4 +1,4 @@
-## TaskBro - Ultimate Secure Task Manager
+## TaskBro - Task Manager
 
 TaskBro is a modern, responsive, and secure task management web application built with a React-Vite frontend, Express/Node.js backend, and MongoDB database. It features secure JWT-based HTTP-Only Cookie authentication and integrates a client-side state manager that persists tasks locally per-user.
 
