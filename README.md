@@ -2,9 +2,6 @@
 
 TaskBro is a modern, responsive, and secure task management web application built with a React-Vite frontend, Express/Node.js backend, and MongoDB database. It features secure JWT-based HTTP-Only Cookie authentication and integrates a client-side state manager that persists tasks locally per-user.
 
-This document serves as the complete technical specification, setup guide, and architectural layout for the TaskBro application.
-
-
 ### 🗺️ System Architecture
 
 TaskBro is built using a decoupled client-server architecture. Below is a conceptual view of how components interact:
