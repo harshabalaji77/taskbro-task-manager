@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 const Header = ({ user, onLogout }) => {
   const location = useLocation();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const dropdownRef = useRef(null);
 
   const isActive = (path) => location.pathname === path;
@@ -18,8 +19,16 @@ const Header = ({ user, onLogout }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <header className="bg-white border-b border-gray-100">
+    <header className={`sticky top-0 z-40 transition-all duration-300 ${scrolled ? 'bg-white/80 backdrop-blur-lg border-b border-gray-200/50 shadow-sm' : 'bg-white border-b border-gray-100'}`}>
       <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center relative">
         <Link to="/" className="text-xl font-bold text-gray-900 hover:text-gray-700 transition-colors">
           TaskBro
