@@ -11,10 +11,11 @@ const TaskChart = ({ tasks }) => {
 
   const completionRate = total > 0 ? Math.round((completed / total) * 100) : 0;
 
-  // Radial gauge settings
+  // Half-donut settings
   const radius = 50;
   const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (completionRate / 100) * circumference;
+  const semiCircumference = Math.PI * radius;
+  const activeLength = (completionRate / 100) * semiCircumference;
 
   const lowPercent = total > 0 ? Math.round((lowPriority / total) * 100) : 0;
   const mediumPercent = total > 0 ? Math.round((mediumPriority / total) * 100) : 0;
@@ -23,76 +24,44 @@ const TaskChart = ({ tasks }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-8">
 
-      {/* Left Card: Completion Rate (40% width on large screens) */}
-      <div className="lg:col-span-2 bg-white border border-gray-200 rounded-2xl p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow duration-200">
+      {/* Left Card: Completion Rate */}
+      <div className="lg:col-span-2 bg-white border border-gray-200 rounded-lg p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow duration-200">
         <div>
           <h3 className="text-base font-bold text-gray-900">Completion rate</h3>
           <p className="text-xs text-gray-500 mt-0.5 font-medium">Overview of done vs. pending tasks</p>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center gap-6 my-4 justify-center lg:justify-start">
-          {/* SVG Radial Gauge in professional Indigo */}
-          <div className="relative w-32 h-32 flex items-center justify-center shrink-0">
-            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+        <div className="flex flex-col items-center justify-center my-4">
+          {/* Half Donut SVG */}
+          <div className="relative flex items-end justify-center select-none" style={{ width: '192px', height: '120px' }}>
+            <svg className="w-full h-full" viewBox="0 0 120 75">
               <circle
                 cx="60"
-                cy="60"
+                cy="65"
                 r={radius}
                 stroke="#f3f4f6"
-                strokeWidth="8.5"
+                strokeWidth="10"
+                strokeLinecap="round"
                 fill="transparent"
+                transform="rotate(180 60 65)"
+                strokeDasharray={`${semiCircumference} ${circumference}`}
               />
               <circle
                 cx="60"
-                cy="60"
+                cy="65"
                 r={radius}
                 stroke="#4f46e5"
-                strokeWidth="8.5"
-                strokeDasharray={circumference}
-                strokeDashoffset={strokeDashoffset}
+                strokeWidth="10"
                 strokeLinecap="round"
                 fill="transparent"
+                transform="rotate(180 60 65)"
+                strokeDasharray={`${activeLength} ${circumference}`}
                 className="transition-all duration-1000 ease-out"
               />
             </svg>
-            <div className="absolute flex flex-col items-center select-none">
+            <div className="absolute flex flex-col items-center pb-2">
               <span className="text-3xl font-extrabold text-gray-900 tracking-tight">{completionRate}%</span>
               <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">Done</span>
-            </div>
-          </div>
-
-          {/* Legend Details */}
-          <div className="flex flex-col gap-3.5 flex-1 w-full">
-            <div>
-              <div className="flex items-center justify-between text-xs mb-1">
-                <span className="flex items-center gap-2 text-gray-600 font-semibold">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#4f46e5]"></span>
-                  Completed
-                </span>
-                <span className="font-bold text-gray-800">{completed} <span className="text-gray-400 font-normal">({completionRate}%)</span></span>
-              </div>
-              <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                <div
-                  className="h-full rounded-full bg-[#4f46e5] transition-all duration-1000 ease-out"
-                  style={{ width: `${completionRate}%` }}
-                ></div>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between text-xs mb-1">
-                <span className="flex items-center gap-2 text-gray-600 font-semibold">
-                  <span className="w-2.5 h-2.5 rounded-full bg-gray-300"></span>
-                  Pending
-                </span>
-                <span className="font-bold text-gray-800">{pending} <span className="text-gray-400 font-normal">({total > 0 ? 100 - completionRate : 0}%)</span></span>
-              </div>
-              <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                <div
-                  className="h-full rounded-full bg-gray-300 transition-all duration-1000 ease-out"
-                  style={{ width: `${total > 0 ? 100 - completionRate : 0}%` }}
-                ></div>
-              </div>
             </div>
           </div>
         </div>
@@ -105,8 +74,8 @@ const TaskChart = ({ tasks }) => {
         </div>
       </div>
 
-      {/* Right Card: Priority Breakdown (60% width on large screens) */}
-      <div className="lg:col-span-3 bg-white border border-gray-200 rounded-2xl p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow duration-200">
+      {/* Right Card: Priority Breakdown */}
+      <div className="lg:col-span-3 bg-white border border-gray-200 rounded-lg p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow duration-200">
         <div>
           <h3 className="text-base font-bold text-gray-900">Priority breakdown</h3>
           <p className="text-xs text-gray-500 mt-0.5 font-medium">Distribution by urgency level</p>
