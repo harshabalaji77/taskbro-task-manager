@@ -33,7 +33,7 @@ sequenceDiagram
 
 - **🔐 High-Security Authentication**: Secure user registration and login utilizing JWT tokens passed via secure HTTP-Only Cookies to prevent XSS (Cross-Site Scripting) and CSRF (Cross-Site Request Forgery) vulnerabilities.
 - **💼 Per-User Task Isolation**: Encrypted database users coupled with client-side isolation ensuring tasks are mapped strictly to the logged-in user via unique identifiers (`taskflow-tasks-${userId}`).
-- **📊 Real-time Dashboard Analytics**: Instant metrics visualization on completed, pending, and total tasks, including an interactive completion rate gauge and priority breakdown chart.
+- **📊 Real-time Dashboard Analytics**: Instant metrics visualization on completed, pending, and total tasks, including an interactive, centered half-donut completion rate gauge and priority breakdown chart.
 - **🏷️ Task Priority System**: Three-tier priority labeling (Low / Medium / High) on all tasks, with color-coded badges for quick visual identification.
 - **🔍 Advanced Filtering**: Filter tasks by completion status (All / Pending / Completed) and priority level (All / Low / Medium / High) from the dedicated Tasks page.
 - **🔎 Instant Fuzzy Search**: Real-time searching of tasks based on titles and descriptions.
@@ -42,7 +42,7 @@ sequenceDiagram
 - **📱 Fluid UI/UX**: Crafted using React, styled with Tailwind CSS, and optimized with Vite for ultra-fast performance.
 - **🔔 Toast Notifications**: Global animated top-center toast system for success and error feedback across login, register, change-password, and task actions — no browser alerts.
 - **🗑️ Delete Task Modal**: Inline styled modal matching the app's design language (consistent with AddTaskModal) used to confirm task deletion.
-- **📈 TaskChart**: SVG-based radial gauge for completion rate and a horizontal stacked bar chart for priority distribution.
+- **📈 TaskChart**: SVG-based half-donut gauge for completion rate and a horizontal stacked bar chart for priority distribution, styled with a border radius matching the stats cards.
 
 
 ### 🛠️ Technology Stack
@@ -93,7 +93,7 @@ TaskBro/
 │   │   │   ├── Footer.jsx         # Application footer component
 │   │   │   ├── SearchBar.jsx      # Fuzzy text task filter input
 │   │   │   ├── TaskCard.jsx       # Layout component for individual tasks
-│   │   │   ├── TaskChart.jsx      # SVG radial gauge & priority stacked bar chart
+│   │   │   ├── TaskChart.jsx      # SVG half-donut gauge & priority stacked bar chart
 │   │   │   ├── TaskList.jsx       # Grid wrapper rendering multiple TaskCards
 │   │   │   ├── TaskStats.jsx      # Dashboard statistics analytics banner
 │   │   │   └── Toast.jsx          # Animated top-center toast notification UI
