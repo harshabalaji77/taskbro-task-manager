@@ -19,7 +19,7 @@ const Dashboard = ({
     .slice(0, 3);
 
   return (
-    <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <main className="max-w-7xl mx-auto pt-8 pb-16 px-4 sm:px-6 lg:px-8">
       <div className="py-4 mb-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-5">
