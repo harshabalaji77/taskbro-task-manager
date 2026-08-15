@@ -108,9 +108,8 @@ const TasksPage = ({
                       setStatusFilter('all');
                       setIsStatusOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${
-                      statusFilter === 'all' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
-                    }`}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${statusFilter === 'all' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
+                      }`}
                   >
                     All Statuses
                     {statusFilter === 'all' && (
@@ -125,9 +124,8 @@ const TasksPage = ({
                       setStatusFilter('pending');
                       setIsStatusOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${
-                      statusFilter === 'pending' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
-                    }`}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${statusFilter === 'pending' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
+                      }`}
                   >
                     Pending
                     {statusFilter === 'pending' && (
@@ -142,9 +140,8 @@ const TasksPage = ({
                       setStatusFilter('completed');
                       setIsStatusOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${
-                      statusFilter === 'completed' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
-                    }`}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${statusFilter === 'completed' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
+                      }`}
                   >
                     Completed
                     {statusFilter === 'completed' && (
@@ -189,9 +186,8 @@ const TasksPage = ({
                       setPriorityFilter('all');
                       setIsPriorityOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${
-                      priorityFilter === 'all' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
-                    }`}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${priorityFilter === 'all' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
+                      }`}
                   >
                     All Priorities
                     {priorityFilter === 'all' && (
@@ -206,9 +202,8 @@ const TasksPage = ({
                       setPriorityFilter('low');
                       setIsPriorityOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${
-                      priorityFilter === 'low' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
-                    }`}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${priorityFilter === 'low' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
+                      }`}
                   >
                     Low Priority
                     {priorityFilter === 'low' && (
@@ -223,9 +218,8 @@ const TasksPage = ({
                       setPriorityFilter('medium');
                       setIsPriorityOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${
-                      priorityFilter === 'medium' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
-                    }`}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${priorityFilter === 'medium' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
+                      }`}
                   >
                     Medium Priority
                     {priorityFilter === 'medium' && (
@@ -240,9 +234,8 @@ const TasksPage = ({
                       setPriorityFilter('high');
                       setIsPriorityOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${
-                      priorityFilter === 'high' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
-                    }`}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between ${priorityFilter === 'high' ? 'text-gray-900 font-bold bg-gray-50' : 'text-gray-700 font-medium'
+                      }`}
                   >
                     High Priority
                     {priorityFilter === 'high' && (

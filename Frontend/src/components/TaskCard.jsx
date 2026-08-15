@@ -6,15 +6,14 @@ const TaskCard = ({ task, onToggleComplete, onDelete, onEdit }) => {
       <div className="p-5">
         <div className="mb-3">
           <div className="flex items-start space-x-3 mb-2">
-            <div 
+            <div
               onClick={() => onToggleComplete(task.id)}
               className="relative mt-1 cursor-pointer"
             >
-              <div className={`h-4 w-4 rounded border-2 transition-all flex items-center justify-center ${
-                task.completed 
-                  ? 'bg-green-600 border-green-600' 
+              <div className={`h-4 w-4 rounded border-2 transition-all flex items-center justify-center ${task.completed
+                  ? 'bg-green-600 border-green-600'
                   : 'bg-white border-gray-300'
-              }`}>
+                }`}>
                 {task.completed && (
                   <svg
                     className="w-2.5 h-2.5 text-white"
@@ -30,21 +29,19 @@ const TaskCard = ({ task, onToggleComplete, onDelete, onEdit }) => {
                 )}
               </div>
             </div>
-            <h3 className={`text-base font-medium flex-1 truncate transition-colors ${
-              task.completed ? 'text-gray-400' : 'text-gray-900'
-            }`}>
+            <h3 className={`text-base font-medium flex-1 truncate transition-colors ${task.completed ? 'text-gray-400' : 'text-gray-900'
+              }`}>
               {task.title}
             </h3>
           </div>
           {task.description && (
-            <p className={`text-sm leading-relaxed transition-colors truncate ${
-              task.completed ? 'text-gray-400' : 'text-gray-600'
-            }`}>
+            <p className={`text-sm leading-relaxed transition-colors truncate ${task.completed ? 'text-gray-400' : 'text-gray-600'
+              }`}>
               {task.description}
             </p>
           )}
         </div>
-        
+
         <div className="flex items-center justify-between pt-3 border-t border-gray-100">
           <div className="flex items-center gap-2.5">
             {task.dueDate && (
@@ -55,17 +52,16 @@ const TaskCard = ({ task, onToggleComplete, onDelete, onEdit }) => {
                 {new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
               </div>
             )}
-            <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider ${
-              (task.priority || 'medium') === 'high'
+            <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider ${(task.priority || 'medium') === 'high'
                 ? 'bg-red-50 text-red-700 border border-red-200'
                 : (task.priority || 'medium') === 'medium'
-                ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                : 'bg-green-50 text-green-700 border border-green-200'
-            }`}>
+                  ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                  : 'bg-green-50 text-green-700 border border-green-200'
+              }`}>
               {task.priority || 'medium'}
             </span>
           </div>
-          
+
           <div className="flex space-x-2">
             <button
               onClick={() => onEdit(task)}

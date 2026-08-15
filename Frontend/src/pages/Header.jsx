@@ -39,8 +39,8 @@ const Header = ({ user, onLogout }) => {
             <Link
               to="/"
               className={`inline-flex items-center text-xs font-semibold transition-colors duration-200 ${isActive('/')
-                  ? 'text-gray-900'
-                  : 'text-gray-400 hover:text-gray-900'
+                ? 'text-gray-900'
+                : 'text-gray-400 hover:text-gray-900'
                 }`}
             >
               <svg className="w-4 h-4 mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -54,8 +54,8 @@ const Header = ({ user, onLogout }) => {
             <Link
               to="/tasks"
               className={`inline-flex items-center text-xs font-semibold transition-colors duration-200 ${isActive('/tasks')
-                  ? 'text-gray-900'
-                  : 'text-gray-400 hover:text-gray-900'
+                ? 'text-gray-900'
+                : 'text-gray-400 hover:text-gray-900'
                 }`}
             >
               <svg className="w-4 h-4 mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
